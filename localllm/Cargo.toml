@@ -1,0 +1,58 @@
+[package]
+name = "localllm"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "localllm"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+axum = { version = "0.7", features = ["macros"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+# Use rustls (pure-Rust TLS) instead of the default native-tls/OpenSSL. This
+# removes the libssl-dev / OpenSSL system dependency, so the binary builds and
+# runs self-contained on both Windows and Ubuntu with no extra packages.
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls", "charset", "http2"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+clap = { version = "4", features = ["derive", "env"] }
+clap_complete = "4"
+tokio-stream = "0.1"
+futures = "0.3"
+anyhow = "1"
+thiserror = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+sha2 = "0.10"
+hex = "0.4"
+indicatif = "0.17"
+dirs = "5"
+uuid = { version = "1", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+toml = "0.8"
+dashmap = "5"
+bytes = "1"
+async-trait = "0.1"
+tokio-util = { version = "0.7", features = ["io"] }
+memchr = "2"
+hyper = { version = "1", features = ["server", "http1"] }
+hyper-util = { version = "0.1", features = ["server", "http1", "tokio", "service"] }
+
+# Aggressive release profile — produces binaries 20-30% smaller and 5-15% faster
+# than default. Compile time goes up significantly; that's the trade.
+[profile.release]
+opt-level = 3
+lto = "fat"            # Whole-program inlining across crates
+codegen-units = 1      # Disable parallel codegen for max optimization
+panic = "abort"        # Skip unwinding tables; crash on panic (smaller, faster)
+strip = "symbols"      # Strip debug symbols from binary
+debug = false
+incremental = false
+
+# Profile-guided cheap dev iterations without sacrificing release perf
+[profile.dev]
+opt-level = 0
+debug = true
