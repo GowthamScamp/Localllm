@@ -115,10 +115,3 @@ curl http://127.0.0.1:11435/v1/chat/completions \
 Override locations with env vars (`LOCALLLM_MODELS_DIR`, `LOCALLLM_GGUF_DIR`, …)
 or a `~/.localllm/config.toml`. Set `HF_TOKEN` to access gated/private models.
 
----
-
-## Further reading
-
-- [USAGE.md](USAGE.md) — full command reference and configuration
-- [ARCHITECTURE.md](ARCHITECTURE.md) — how it works internally
-- [WORKFLOW_DEEP_DIVE.md](WORKFLOW_DEEP_DIVE.md) — end-to-end request lifecycle
